@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
+import numpy as np
 import timeit
 
 
@@ -98,17 +99,16 @@ def plot_results(colors, mu, clusters, ax):
 
 # myarray = np.fromfile('BinaryData.dat', dtype=float)
 
-def lloyd_alg(X, k):
+def lloyd_alg(X, k, ax1):
     start = timeit.default_timer()
     mu, clusters = find_centers(X, k)
     stop = timeit.default_timer()
     print("Lloyd algorithm time: ", stop - start)
     plot_results(colors, mu, clusters, ax1)
-    f.show()
     print(mu)
 
 
-def pyt_kmenas(X, k):
+def pyt_kmenas(X, k, ax2):
     start = timeit.default_timer()
     kmeans = KMeans(n_clusters=k, random_state=0).fit(X)
     mu2 = kmeans.cluster_centers_
@@ -116,7 +116,6 @@ def pyt_kmenas(X, k):
     stop = timeit.default_timer()
     print("Lloyd algorithm time: ", stop - start)
     plot_results(colors, mu2, clusters2, ax2)
-    f.show()
     print(mu2)
 
 
@@ -124,10 +123,10 @@ N = 500
 k = 3
 colors = ["g", "r", "c", "b", "y"]
 f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(30, 10))
-
 X = init_board_gauss3d(N, k)
 
-lloyd_alg(X, k)
-pyt_kmenas(X, k)
+lloyd_alg(X, k, ax1)
+pyt_kmenas(X, k, ax2)
+f.show()
 
 print("done...")
