@@ -3,6 +3,7 @@ __author__ = 'gregor'
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
+import timeit
 
 
 def cluster_points(X, mu):
@@ -70,7 +71,7 @@ def init_board_gauss3d(N, k):
     n = float(N) / k
     X = []
     for i in range(k):
-        c = (np.random.uniform(-1, 1), np.random.uniform(-1, 1),  np.random.uniform(-1, 1))
+        c = (np.random.uniform(-1, 1), np.random.uniform(-1, 1), np.random.uniform(-1, 1))
         s = np.random.uniform(0.05, 0.5)
         x = []
         while len(x) < n:
@@ -83,7 +84,7 @@ def init_board_gauss3d(N, k):
     return X
 
 
-def plot_results(colors, mu, ax):
+def plot_results(colors, mu, clusters, ax):
     for col, center, k in zip(colors, mu, [x for x in range(0, 5)]):
         ax.scatter(np.asarray(clusters[k])[:, 0], np.asarray(clusters[k])[:, 1], c=col)
         ax.scatter(center[0], center[1], c="#000000", marker="x", s=250, linewidth='3')
@@ -98,8 +99,28 @@ def plot_results(colors, mu, ax):
 #                     [[5.1, 5.1], [5.2, 4.8], [4.7, 4.9], [5.1, 4.8], [5.4, 5.1]]])
 # ***********************************************************************************
 
-myarray = np.fromfile('BinaryData.dat',dtype=float)
+# myarray = np.fromfile('BinaryData.dat', dtype=float)
 
+def lloyd_alg(X, k):
+    start = timeit.default_timer()
+    mu, clusters = find_centers(X, k)
+    stop = timeit.default_timer()
+    print("Lloyd algorithm time: ", stop - start)
+    plot_results(colors, mu, clusters, ax1)
+    f.show()
+    print(mu)
+
+
+def pyt_kmenas(X, k):
+    start = timeit.default_timer()
+    kmeans = KMeans(n_clusters=k, random_state=0).fit(X)
+    mu2 = kmeans.cluster_centers_
+    clusters2 = cluster_points(X, mu2)
+    stop = timeit.default_timer()
+    print("Lloyd algorithm time: ", stop - start)
+    plot_results(colors, mu2, clusters2, ax2)
+    f.show()
+    print(mu2)
 
 
 N = 500
@@ -108,18 +129,8 @@ colors = ["g", "r", "c", "b", "y"]
 f, (ax1, ax2) = plt.subplots(1, 2, sharey=True, figsize=(30, 10))
 
 X = init_board_gauss3d(N, k)
-mu, clusters = find_centers(X, k)
 
-plot_results(colors, mu, ax1)
-f.show()
+lloyd_alg(X, k)
+pyt_kmenas(X, k)
 
-kmeans = KMeans(n_clusters=k, random_state=0).fit(X)
-mu2 = kmeans.cluster_centers_
-clusters2 = cluster_points(X, mu2)
-
-plot_results(colors, mu, ax2)
-f.show()
-
-print(mu)
-print(mu2)
 print("done...")
