@@ -85,8 +85,8 @@ def init_board_gauss3d(N, k):
 
 def plot_results(colors, mu, clusters, ax):
     for col, center, k in zip(colors, mu, [x for x in range(0, 5)]):
-        ax.scatter(np.asarray(clusters[k])[:, 0], np.asarray(clusters[k])[:, 1], c=col)
-        ax.scatter(center[0], center[1], c="#000000", marker="x", s=250, linewidth='3')
+        ax.scatter(np.asarray(clusters[k])[:, 1], np.asarray(clusters[k])[:, 2], c=col)
+        ax.scatter(center[1], center[2], c="#000000", marker="x", s=250, linewidth='3')
 
 
 # ******************************TEST DATA*******************************************
@@ -122,7 +122,8 @@ def pyt_kmenas(X, k, ax2, colors):
     print(mu2)
 
 
-X = pd.read_pickle("data.pkl")[[0, 1]].values
+X = pd.read_pickle("data2.pkl")[[0, 1, 2]].values
+# X = pd.read_pickle("data.pkl")[[0, 1]].values
 
 N = 500
 k = 3
