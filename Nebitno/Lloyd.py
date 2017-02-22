@@ -5,7 +5,7 @@ from sklearn.cluster import KMeans
 from scipy import spatial
 import matplotlib.pyplot as plt
 
-from LloydAlg import *
+from Nebitno.LloydAlg import *
 
 
 def lloyd_alg(X, k, ax1, colors):
