@@ -1,6 +1,7 @@
 import pandas as pd
 
 from FilterMethods import *
+from OptimalKMethods import *
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -19,7 +20,7 @@ __author__ = 'gregor'
 
 N = 500
 k = 3
-X = pd.read_pickle("data.pkl")[[0, 1]].values
+X = pd.read_pickle("bananadata.pkl")[[0, 1]].values
 #X = np.matrix()
 #addRandomSampleNormal(X, [10,10],[[1,0],[0,1]], 200)
 #addRandomSampleNormal(X, [5,10],[[1,0],[0,1]], 200)
@@ -45,3 +46,5 @@ for totalDist in totalDistances:
 
 print("working")
 print(totalDistances)
+
+doStuffForOptimalK(X, 7)
