@@ -1,4 +1,3 @@
-__author__ = 'gregor'
 from sklearn import svm
 
 from Nebitno.LloydAlg import *

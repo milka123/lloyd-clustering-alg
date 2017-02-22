@@ -49,17 +49,36 @@ def lloyd_clustering_alg(X, k):
     kdt = spatial.KDTree(X)
     kdtree = create_kdtree(kdt.tree, X)
     candidates = random_candidates(X, k)
+    totalDistances = [[] for i in range(k)]
+
     while True:
         prune_candidates(kdtree, candidates)
+
+        # ---------- ISPITIVANJE KONVERGENCIJE ------------
+        for i in range(len(candidates)):
+            totalDistances[i].append(calculateCandidateDistances(X,candidates[i]))
+        # -------------------------------------------------
+
         has_conv = True
         for id, can in enumerate(candidates):
             has_conv = can.recalculate(id) and has_conv
         if has_conv:
             break
     prune_candidates(kdtree, candidates)
-    return candidates
+    return candidates, totalDistances
 
+def calculateSumDistances(X, candidates):
+    sum = 0
+    for cand in candidates:
+        for index in cand.indexes:
+            sum += np.linalg.norm(X[index]-cand.point)
+    return sum;
 
+def calculateCandidateDistances(X, cand):
+    sum = 0
+    for index in cand.indexes:
+        sum += np.linalg.norm(X[index] - cand.point)
+    return sum
 def plot_results(colors, mu, clusters, ax):
     for col, center, k in zip(colors, mu, [x for x in range(0, 5)]):
         ax.scatter(np.asarray(clusters[k])[:, 0], np.asarray(clusters[k])[:, 1], c=col)
